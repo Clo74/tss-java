@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package banca;
+package lez.pkg09;
+
+import java.time.LocalDate;
 
 /**
  *
@@ -11,35 +13,32 @@ package banca;
  */
 public class App {
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-
+        
+        Movimento m = new Movimento(LocalDate.MAX, TipoMovimento.DEPOSITO, 0);
+        
         ContoCorrente cc = new ContoCorrente(1, "Rossi");
-        cc.deposito(50);
-        cc.deposito(25.30);
-        cc.prelievo(50);
-        cc.deposito(45.3);
-        cc.prelievo(20);
         cc.deposito(100);
+        cc.prelievo(40);
+        cc.deposito(25);
+        cc.prelievo(10);
         stampaConto(cc);
-
-        System.out.println("----------------------------");
-        for (int i = 0; i < cc.estrattoConto(4).size(); i++) {
-            Double movimento = cc.estrattoConto(4).get(i);
-             System.out.println(movimento);
-        }
-        System.out.println("----------------------------");
-        for (Double movimento : cc.estrattoConto(4)) {
-            System.out.println(movimento);
-        }
-        System.out.println("----------------------------");
-        cc.estrattoConto(4).stream().forEach(movimento -> System.out.println(movimento));
     }
-
+    
     public static void stampaConto(ContoCorrente cc) {
         System.out.println("----------------------------");
         System.out.println("numero:\t\t" + cc.getNumero());
         System.out.println("intestatario:\t" + cc.getIntestatario());
         System.out.println(String.format("saldo:\t\t%s", cc.getSaldo()));
+        System.out.println("--------------- Movimenti ----------");
+        cc.estrattoConto(5).stream().forEach(movimento -> {
+            System.out.println(String.format("Data %s \t Tipo %s \t Importo %s", 
+                    movimento.getData(), movimento.getTipoMovimento(),movimento.getImporto()));
+        });
         System.out.println("----------------------------");
     }
+    
 }

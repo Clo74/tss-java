@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package banca;
+package lez.pkg09;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ public class ContoCorrente {
     private final int numero;
     private final String intestatario;
     private double saldo;
-    private List<Double> movimenti = new ArrayList<>();
+    private final List<Movimento> movimenti = new ArrayList<>();
     private static float interesse = 0.04f;
 
     public ContoCorrente(int numero, String intestatario) {
@@ -31,7 +32,7 @@ public class ContoCorrente {
         this.saldo = saldo;
     }
 
-    public void prelievo(int somma) {
+    public void prelievo() {
         this.prelievo(100);
     }
 
@@ -39,7 +40,7 @@ public class ContoCorrente {
         if (saldo < somma || somma <= 0) {
             throw new IllegalArgumentException("La somma non è disponibile"); //genera una eccezione
         }
-        movimenti.add(0, -somma);
+        movimenti.add(0, new Movimento(LocalDate.now(), TipoMovimento.PRELIEVO, somma));
         saldo -= somma;
     }
 
@@ -47,7 +48,7 @@ public class ContoCorrente {
         if (somma <= 0) {
             throw new IllegalArgumentException("deposito errato");
         }
-        movimenti.add(0, somma);
+        movimenti.add(0, new Movimento(LocalDate.now(), TipoMovimento.DEPOSITO, somma));
         saldo += somma;
     }
 
@@ -63,13 +64,13 @@ public class ContoCorrente {
         return saldo + (saldo * interesse);
     }
 
-    public List<Double> estrattoConto(int num) {
+    public List<Movimento> estrattoConto(int num) {
         return movimenti.stream().limit(num).collect(Collectors.toList());
     }
 
-    public List<Double> estrattoDepositi(int num) {
+    public List<Movimento> estrattoDepositi(int num) {
         return movimenti.stream()
-                .filter(movimento -> movimento > 0)
+                .filter(movimento -> movimento.getImporto() > 0)
                 .limit(num)
                 .collect(Collectors.toList());
     }
@@ -80,4 +81,33 @@ public class ContoCorrente {
         }
         interesse = valore;
     }
+
+    public static class Movimento {
+
+        private final LocalDate data;
+
+        private final TipoMovimento tipoMovimento;
+
+        private final double importo;
+
+        private Movimento(LocalDate data, TipoMovimento tipoMovimento, double importo) {
+            this.data = data;
+            this.tipoMovimento = tipoMovimento;
+            this.importo = importo;
+        }
+
+        public LocalDate getData() {
+            return data;
+        }
+
+        public TipoMovimento getTipoMovimento() {
+            return tipoMovimento;
+        }
+
+        public double getImporto() {
+            return importo;
+        }
+
+    }
+
 }
