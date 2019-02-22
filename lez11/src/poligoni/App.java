@@ -16,6 +16,8 @@ public class App {
         System.out.println(quadrato);
         System.out.println("perimetro->" + quadrato.perimetro());
         System.out.println("area->" + quadrato.area());
+
+        
     }
 }
 
@@ -27,7 +29,7 @@ abstract class Poligono {
         this.numeroLati = lati;
     }
 
-    public int getNumeroLati() {
+    public final int getNumeroLati() {
         return numeroLati;
     }
 
@@ -63,10 +65,8 @@ class Quadrato extends Poligono {
 
     @Override
     public String toString() {
-        return String.format("Sono un quadrato \n %s \n lato -> %s", 
-                super.toString(),this.lato);
+        return String.format("Sono un quadrato \n %s \n lato -> %s",
+                super.toString(), this.lato);
     }
-    
 
-    
 }
