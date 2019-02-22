@@ -34,6 +34,18 @@ abstract class FiguraGeometrica {
 
 }
 
+interface IFiguraGeometrica {
+
+    public  String nome();
+
+    public  double perimetro();
+
+    public  double area();
+
+    public  void disegna();
+
+}
+
 class Square extends FiguraGeometrica {
 
     private final String nome;
@@ -97,4 +109,29 @@ class Square extends FiguraGeometrica {
         System.out.println("");
     }
 
+}
+
+
+class Rectangle implements IFiguraGeometrica{
+
+    @Override
+    public String nome() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double perimetro() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double area() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void disegna() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
