@@ -30,14 +30,12 @@ public class App {
 
             String ricerca = scanner.nextLine();
 
-            ResultSet risultato = DbManager.searchCustomersByName(cn, ricerca);
-
-            System.out.println("--------- Clienti trovati --------------------");
-            while (risultato.next()) {
-                System.out.println(risultato.getString("customerName"));
+            try (ResultSet risultato = DbManager.searchCustomersByName(cn, ricerca)) {
+                System.out.println("--------- Clienti trovati --------------------");
+                while (risultato.next()) {
+                    System.out.println(risultato.getString("customerNames"));
+                }
             }
-
-            risultato.close();
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
