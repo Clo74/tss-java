@@ -25,23 +25,18 @@ import java.util.logging.Logger;
  */
 public class App5 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException, IOException {
 
-        try {
-            URL url = new URL("https://www.google.it");
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-            Path fileToWrite = Paths.get("/home/tss/google_home_it.html");
-            if (Files.exists(fileToWrite)) {
-                Files.delete(fileToWrite);
-            }
-            String riga;
-            while ((riga = br.readLine()) != null) {
-                Files.write(fileToWrite, riga.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println("URL non valido..." + ex);
-        } catch (IOException ex) {
-            System.out.println("errore di IO..." + ex);
+        URL url = new URL("https://www.google.it");
+        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+        Path fileToWrite = Paths.get("/home/tss/google_home_it.html");
+        if (Files.exists(fileToWrite)) {
+            Files.delete(fileToWrite);
         }
+        String riga;
+        while ((riga = br.readLine()) != null) {
+            Files.write(fileToWrite, riga.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        }
+
     }
 }
