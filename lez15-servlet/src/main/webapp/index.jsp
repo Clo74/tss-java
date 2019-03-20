@@ -14,18 +14,18 @@
         <c:import url="./includes/head-imports.jsp"/>
     </head>
     <body>
-        <header>
-            <nav>
-                <c:import url="./includes/menu.jsp"/>
-            </nav>
-        </header>
-        
         <main>
-            
+            <header>
+                <nav>
+                    <c:import url="./includes/menu.jsp"/>
+                </nav>
+            </header>
+            <article>
+
+            </article>
+            <footer>
+                <c:import url="./includes/footer.jsp"/>
+            </footer>
         </main>
-        
-        <footer>
-            
-        </footer>
     </body>
 </html>
