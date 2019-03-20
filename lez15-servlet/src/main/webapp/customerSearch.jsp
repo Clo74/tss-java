@@ -11,43 +11,50 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Customers</title>
-    </head>
-    <body>
-        <h1>Cerca Clienti con JSP</h1>
-        <form method="POST" >
+        <c:import url="./includes/head-imports.jsp"/>
+    <nav>
+        <c:import url="./includes/menu.jsp"/>
+    </nav>
+</head>
+<body>
+    <form method="POST" class="pure-form">
+        <fieldset>
+            <legend>Cerca Clienti con JSP</legend>
             <label for="search">Cerca</label>
             <input id="search" type="text" name="search" value="${param.search}" placeholder="inserisci iniziali"  />
-            <input type="submit" name="invia" value="Invia" />
-        </form>
+            <input type="submit" name="invia" value="Invia" 
+                   class="pure-button pure-button-primary"/>
+        </fieldset>
+    </form>
 
-        <br/><hr/>
+    <br/><hr/>
 
-        <c:if test="${not empty param.invia}">
-            <c:set var="customers" value="${db.searchCustomer(param.search)}"/>
-            <c:choose >
-                <c:when test="${not empty customers}">
-                    <table>
-                        <thead>
+    <c:if test="${not empty param.invia}">
+        <c:set var="customers" value="${db.searchCustomer(param.search)}"/>
+        <c:choose >
+            <c:when test="${not empty customers}">
+                <table class="pure-table pure-table-bordered" style="margin: 0 auto;">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>nome</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <c:forEach items="${customers}" var="cust">
                             <tr>
-                                <th>id</th>
-                                <th>nome</th>
+                                <td>${cust.id}</td>
+                                <td>${cust.name}</td>
                             </tr>
-                        </thead>
-
-                        <tbody>
-                            <c:forEach items="${customers}" var="cust">
-                                <tr>
-                                    <td>${cust.id}</td>
-                                    <td>${cust.name}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </c:when>
-                <c:otherwise>
-                    <h3>Nessun cliente trovato</h3>
-                </c:otherwise>
-            </c:choose>
-        </c:if>
-    </body>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <h3>Nessun cliente trovato</h3>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+</body>
 </html>

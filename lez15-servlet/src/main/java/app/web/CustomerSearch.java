@@ -5,7 +5,7 @@
  */
 package app.web;
 
-import app.business.DbManager;
+import app.business.CustomerStore;
 import app.models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CustomerSearch extends HttpServlet {
     
     @Inject
-    DbManager manager;
+    CustomerStore manager;
             
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

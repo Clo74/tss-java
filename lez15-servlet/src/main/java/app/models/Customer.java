@@ -5,6 +5,8 @@
  */
 package app.models;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author tss
@@ -14,6 +16,9 @@ public class Customer {
     private int id;
     private String name;
 
+    public Customer() {
+    }
+
     public Customer(int id, String name) {
         this.id = id;
         this.name = name;
@@ -21,6 +26,10 @@ public class Customer {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -52,7 +61,5 @@ public class Customer {
         final Customer other = (Customer) obj;
         return this.id == other.id;
     }
-    
-    
 
 }
