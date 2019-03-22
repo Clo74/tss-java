@@ -5,13 +5,19 @@
  */
 package it.ciacformazione.nostalciac.entity;
 
+import it.ciacformazione.nostalciac.auto.TTagsCorsi;
+import it.ciacformazione.nostalciac.auto.TTagsEsperienze;
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -20,6 +26,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_tags")
 public class Tag implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTag")
+    private Collection<TTagsCorsi> tTagsCorsiCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTag")
+    private Collection<TTagsEsperienze> tTagsEsperienzeCollection;
     @Id
     @Column(name = "id_tag")
     private int id;
@@ -83,6 +94,24 @@ public class Tag implements Serializable {
     @Override
     public String toString() {
         return "Tag{" + "id=" + id + ", tag=" + tag + ", tipo=" + tipo + '}';
+    }
+
+    @XmlTransient
+    public Collection<TTagsCorsi> getTTagsCorsiCollection() {
+        return tTagsCorsiCollection;
+    }
+
+    public void setTTagsCorsiCollection(Collection<TTagsCorsi> tTagsCorsiCollection) {
+        this.tTagsCorsiCollection = tTagsCorsiCollection;
+    }
+
+    @XmlTransient
+    public Collection<TTagsEsperienze> getTTagsEsperienzeCollection() {
+        return tTagsEsperienzeCollection;
+    }
+
+    public void setTTagsEsperienzeCollection(Collection<TTagsEsperienze> tTagsEsperienzeCollection) {
+        this.tTagsEsperienzeCollection = tTagsEsperienzeCollection;
     }
     
     

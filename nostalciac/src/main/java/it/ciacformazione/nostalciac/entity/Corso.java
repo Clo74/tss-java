@@ -6,9 +6,12 @@
 package it.ciacformazione.nostalciac.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -16,26 +19,28 @@ import javax.persistence.Table;
  * @author tss
  */
 @Entity
-@Table(name = "t_sedi")
-public class Sede implements Serializable {
+@Table(name = "t_corsi")
+public class Corso implements Serializable {
 
     @Id
-    @Column(name = "id_sede")
+    @Column(name = "id_corso")
     private int id;
-    @Column(name = "sede")
+    @Column(name = "nome_corso")
     private String nome;
-    @Column(name = "indirizzo_sede")
-    private String indirizzo;
-    @Column(name = "citta")
-    private String citta;
-    @Column(name = "tel_sede")
-    private String telefono;
-    @Column(name = "mail_sede")
-    private String email;
-    @Column(name = "note_sede")
+    @Column(name = "edizione")
+    private String edizione;
+    @Column(name = "data_inizio")
+    private LocalDate inizio;
+    @Column(name = "data_fine")
+    private LocalDate fine;
+    @Column(name = "note_corso")
     private String note;
 
-    public Sede() {
+    @ManyToOne()
+    @JoinColumn(name = "id_sede", referencedColumnName = "id_sede")
+    private Sede sede;
+
+    public Corso() {
     }
 
     public int getId() {
@@ -54,36 +59,28 @@ public class Sede implements Serializable {
         this.nome = nome;
     }
 
-    public String getIndirizzo() {
-        return indirizzo;
+    public String getEdizione() {
+        return edizione;
     }
 
-    public void setIndirizzo(String indirizzo) {
-        this.indirizzo = indirizzo;
+    public void setEdizione(String edizione) {
+        this.edizione = edizione;
     }
 
-    public String getCitta() {
-        return citta;
+    public LocalDate getInizio() {
+        return inizio;
     }
 
-    public void setCitta(String citta) {
-        this.citta = citta;
+    public void setInizio(LocalDate inizio) {
+        this.inizio = inizio;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public LocalDate getFine() {
+        return fine;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFine(LocalDate fine) {
+        this.fine = fine;
     }
 
     public String getNote() {
@@ -94,9 +91,17 @@ public class Sede implements Serializable {
         this.note = note;
     }
 
+    public Sede getSede() {
+        return sede;
+    }
+
+    public void setSede(Sede sede) {
+        this.sede = sede;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
         hash = 47 * hash + this.id;
         return hash;
     }
@@ -112,13 +117,13 @@ public class Sede implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Sede other = (Sede) obj;
+        final Corso other = (Corso) obj;
         return this.id == other.id;
     }
 
     @Override
     public String toString() {
-        return "Sede{" + "id=" + id + ", nome=" + nome + ", indirizzo=" + indirizzo + ", citta=" + citta + ", telefono=" + telefono + ", email=" + email + ", note=" + note + '}';
+        return "Corso{" + "id=" + id + ", nome=" + nome + ", edizione=" + edizione + ", inizio=" + inizio + ", fine=" + fine + ", note=" + note + '}';
     }
-    
+
 }
