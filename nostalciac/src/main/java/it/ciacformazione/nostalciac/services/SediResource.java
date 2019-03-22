@@ -5,8 +5,8 @@
  */
 package it.ciacformazione.nostalciac.services;
 
-import it.ciacformazione.nostalciac.business.TagStore;
-import it.ciacformazione.nostalciac.entity.Tag;
+import it.ciacformazione.nostalciac.business.SedeStore;
+import it.ciacformazione.nostalciac.entity.Sede;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -22,39 +22,41 @@ import javax.ws.rs.core.MediaType;
  *
  * @author tss
  */
-@Path("tags")
-public class TagResources {
+@Path("sedi")
+public class SediResource {
 
     @Inject
-    TagStore store;
+    SedeStore store;
 
     @GET
-    public List<Tag> findAll() {
+    public List<Sede> findAll() {
         return store.all();
     }
 
     @GET
     @Path("{id}")
-    public Tag find(@PathParam("id") int id) {
+    public Sede find(@PathParam("id") int id) {
         return store.find(id);
     }
-
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(Tag tag) {
-        store.save(tag);
+    public void create(Sede s) {
+        store.save(s);
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public void update(@PathParam("id") int id,Tag tag) {
-        store.save(tag);
+    public void update(@PathParam("id") int id, Sede s) {
+        s.setId(id);
+        store.save(s);
     }
-    
+
     @DELETE
     @Path("{id}")
-    public void delete(@PathParam("id") int id){
+    public void delete(@PathParam("id") int id) {
         store.remove(id);
     }
+
 }
