@@ -38,6 +38,12 @@ public class Sede implements Serializable {
     public Sede() {
     }
 
+    public Sede(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+    
     public int getId() {
         return id;
     }

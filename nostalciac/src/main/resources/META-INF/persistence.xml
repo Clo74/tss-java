@@ -3,6 +3,9 @@
   <persistence-unit name="nostalciac" transaction-type="JTA">
     <jta-data-source>jdbc/nostalciacDS</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+        <property name="eclipselink.weaving" value="true"/>
+        <property name="eclipselink.weaving.lazy" value="true"/>
+    </properties>
   </persistence-unit>
 </persistence>
