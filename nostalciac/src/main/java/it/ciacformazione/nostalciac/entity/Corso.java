@@ -10,11 +10,12 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.json.bind.annotation.JsonbDateFormat;
-import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -22,7 +23,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,6 +34,7 @@ public class Corso implements Serializable {
 
     @Id
     @Column(name = "id_corso")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "nome_corso")
     private String nome;
@@ -47,12 +48,9 @@ public class Corso implements Serializable {
     private LocalDate fine;
     @Column(name = "note_corso")
     private String note;
-
-    @Transient
-    private Integer idSede;
     
-    //@JsonbTransient
-    @JsonbTypeAdapter(SedeAdapter.class)
+    
+    //@JsonbTypeAdapter(SedeAdapter.class)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_sede", referencedColumnName = "id_sede")
     private Sede sede;
@@ -132,14 +130,6 @@ public class Corso implements Serializable {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
-    }
-
-    public Integer getIdSede() {
-        return idSede;
-    }
-
-    public void setIdSede(Integer idSede) {
-        this.idSede = idSede;
     }
 
     

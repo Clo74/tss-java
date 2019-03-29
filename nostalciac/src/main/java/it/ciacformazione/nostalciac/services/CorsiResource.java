@@ -24,18 +24,22 @@ import javax.ws.rs.core.MediaType;
  *
  * @author tss
  */
-@Path("corsi")
 public class CorsiResource {
 
-    @Inject
-    CorsoStore store;
+    private final CorsoStore store;
+    private final SedeStore sedeStore;
 
-    @Inject
-    SedeStore sedeStore;
-    
+    Integer sedeId;
+
+    public CorsiResource(CorsoStore store, SedeStore sedeStore, Integer sedeId) {
+        this.store = store;
+        this.sedeStore = sedeStore;
+        this.sedeId = sedeId;
+    }
+
     @GET
     public List<Corso> findAll() {
-        return store.findAll();
+        return store.findBySede(sedeId);
     }
 
     @GET
@@ -47,19 +51,19 @@ public class CorsiResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(Corso c) {
-        Sede sede = sedeStore.find(c.getIdSede());
+        Sede sede = sedeStore.find(sedeId);
         c.setSede(sede);
         store.save(c);
     }
 
     @PUT
     @Path("{id}")
-    public void update(@PathParam("id") Integer id,Corso c) {
+    public void update(@PathParam("id") Integer id, Corso c) {
         c.setId(id);
-        c.setSede(sedeStore.find(c.getIdSede()));
+        c.setSede(sedeStore.find(sedeId));
         store.save(c);
     }
-    
+
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") Integer id) {

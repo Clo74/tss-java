@@ -8,7 +8,6 @@ package it.ciacformazione.nostalciac.entity;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.bind.adapter.JsonbAdapter;
-import javax.json.bind.annotation.JsonbTypeAdapter;
 
 /**
  *

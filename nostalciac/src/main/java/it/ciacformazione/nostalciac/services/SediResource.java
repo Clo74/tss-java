@@ -5,8 +5,10 @@
  */
 package it.ciacformazione.nostalciac.services;
 
+import it.ciacformazione.nostalciac.business.CorsoStore;
 import it.ciacformazione.nostalciac.business.SedeStore;
 import it.ciacformazione.nostalciac.entity.Sede;
+import java.net.URI;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -16,47 +18,41 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
  * @author tss
  */
-@Path("sedi")
+@Path("/sedi")
 public class SediResource {
 
     @Inject
     SedeStore store;
+    @Inject
+    CorsoStore corsoStore;
 
     @GET
     public List<Sede> findAll() {
         return store.all();
     }
 
-    @GET
     @Path("{id}")
-    public Sede find(@PathParam("id") int id) {
-        return store.find(id);
+    public SedeResource find(@PathParam("id") int id) {
+        return new SedeResource(corsoStore, store, id);
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(Sede s) {
-        store.save(s);
-    }
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{id}")
-    public void update(@PathParam("id") int id, Sede s) {
-        s.setId(id);
-        store.save(s);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void delete(@PathParam("id") int id) {
-        store.remove(id);
+    public Response create(Sede s, @Context UriInfo uriInfo) {
+        Sede saved = store.save(s);
+        URI uri = uriInfo.getAbsolutePathBuilder()
+                .path("/" + saved.getId())
+                .build();
+        return Response.ok(uri).build();
     }
 
 }
