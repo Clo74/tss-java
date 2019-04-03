@@ -9,11 +9,14 @@ import it.ciacformazione.nostalciac.business.CorsoStore;
 import it.ciacformazione.nostalciac.business.SedeStore;
 import it.ciacformazione.nostalciac.business.TagStore;
 import it.ciacformazione.nostalciac.entity.Sede;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.container.ResourceContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -22,19 +25,17 @@ import javax.ws.rs.core.MediaType;
  */
 public class SedeResource {
 
-    private final CorsoStore corsoStore;
-    private final SedeStore store;
-    private final TagStore tagStore;
-    private final Integer id;
+    @Inject
+    private CorsoStore corsoStore;
+    
+    @Inject
+    private SedeStore store;
+    
+    private Integer id;
 
-    public SedeResource(CorsoStore corsoStore, SedeStore store,
-            TagStore tagStore, Integer id) {
-        this.corsoStore = corsoStore;
-        this.store = store;
-        this.tagStore = tagStore;
-        this.id = id;
-    }
-
+    @Context
+    ResourceContext rc;
+    
     @GET
     public Sede find() {
         return store.find(id);
@@ -54,6 +55,18 @@ public class SedeResource {
 
     @Path("/corsi")
     public CorsiResource getCorsi() {
-        return new CorsiResource(corsoStore, store, tagStore, id);
+        CorsiResource resource = rc.getResource(CorsiResource.class);
+        resource.setSedeId(id);
+        return resource;
     }
+    
+    /*
+    get e set
+    */
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    
 }

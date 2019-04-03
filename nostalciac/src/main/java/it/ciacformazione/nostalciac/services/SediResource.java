@@ -13,12 +13,11 @@ import java.net.URI;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,6 +37,9 @@ public class SediResource {
     @Inject
     TagStore tagStore;
 
+    @Context
+    ResourceContext rc;
+    
     @GET
     public List<Sede> findAll() {
         return store.all();
@@ -45,7 +47,9 @@ public class SediResource {
 
     @Path("{id}")
     public SedeResource find(@PathParam("id") int id) {
-        return new SedeResource(corsoStore, store, tagStore, id);
+        SedeResource resource = rc.getResource(SedeResource.class);
+        resource.setId(id);
+        return resource;
     }
 
     @POST
@@ -58,4 +62,17 @@ public class SediResource {
         return Response.ok(uri).build();
     }
 
+    /*
+    get e set
+    */
+
+    public ResourceContext getRc() {
+        return rc;
+    }
+
+    public void setRc(ResourceContext rc) {
+        this.rc = rc;
+    }
+    
+    
 }

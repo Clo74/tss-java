@@ -23,6 +23,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,18 +35,16 @@ import javax.ws.rs.core.UriInfo;
  */
 public class CorsiResource {
 
-    private final CorsoStore store;
-    private final SedeStore sedeStore;
-    private final TagStore tagStore;
-    private final Integer sedeId;
+    @Inject
+    private CorsoStore store;
 
-    public CorsiResource(CorsoStore store, SedeStore sedeStore,
-            TagStore tagStore, Integer sedeId) {
-        this.store = store;
-        this.sedeStore = sedeStore;
-        this.tagStore = tagStore;
-        this.sedeId = sedeId;
-    }
+    @Inject
+    private SedeStore sedeStore;
+
+    @Inject
+    private TagStore tagStore;
+
+    private Integer sedeId;
 
     @GET
     public List<Corso> findAll() {
@@ -83,17 +82,17 @@ public class CorsiResource {
     public void delete(@PathParam("id") Integer id) {
         store.remove(id);
     }
-    
+
     @GET
     @Path("{id}/tags")
-    public List<Tag> findTags(@PathParam("id") Integer id){
+    public List<Tag> findTags(@PathParam("id") Integer id) {
         return store.findTags(id);
     }
-    
+
     @PUT
     @Path("{id}/tags")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateTags(@PathParam("id") Integer id, List<Integer> idTags){
+    public void updateTags(@PathParam("id") Integer id, List<Integer> idTags) {
         Corso finded = store.find(id);
         Set<Tag> tosave = idTags.stream()
                 .map(t -> tagStore.find(t))
@@ -101,5 +100,12 @@ public class CorsiResource {
         finded.setTags(tosave);
         store.save(finded);
     }
-    
+
+    /*
+    get e set
+     */
+    public void setSedeId(Integer sedeId) {
+        this.sedeId = sedeId;
+    }
+
 }
