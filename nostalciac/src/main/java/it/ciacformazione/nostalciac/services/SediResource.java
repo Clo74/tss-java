@@ -7,6 +7,7 @@ package it.ciacformazione.nostalciac.services;
 
 import it.ciacformazione.nostalciac.business.CorsoStore;
 import it.ciacformazione.nostalciac.business.SedeStore;
+import it.ciacformazione.nostalciac.business.TagStore;
 import it.ciacformazione.nostalciac.entity.Sede;
 import java.net.URI;
 import java.util.List;
@@ -34,6 +35,8 @@ public class SediResource {
     SedeStore store;
     @Inject
     CorsoStore corsoStore;
+    @Inject
+    TagStore tagStore;
 
     @GET
     public List<Sede> findAll() {
@@ -42,7 +45,7 @@ public class SediResource {
 
     @Path("{id}")
     public SedeResource find(@PathParam("id") int id) {
-        return new SedeResource(corsoStore, store, id);
+        return new SedeResource(corsoStore, store, tagStore, id);
     }
 
     @POST

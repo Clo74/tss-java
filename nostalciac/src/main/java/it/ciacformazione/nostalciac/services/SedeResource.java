@@ -7,6 +7,7 @@ package it.ciacformazione.nostalciac.services;
 
 import it.ciacformazione.nostalciac.business.CorsoStore;
 import it.ciacformazione.nostalciac.business.SedeStore;
+import it.ciacformazione.nostalciac.business.TagStore;
 import it.ciacformazione.nostalciac.entity.Sede;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -23,11 +24,14 @@ public class SedeResource {
 
     private final CorsoStore corsoStore;
     private final SedeStore store;
+    private final TagStore tagStore;
     private final Integer id;
 
-    public SedeResource(CorsoStore corsoStore, SedeStore store, Integer id) {
+    public SedeResource(CorsoStore corsoStore, SedeStore store,
+            TagStore tagStore, Integer id) {
         this.corsoStore = corsoStore;
         this.store = store;
+        this.tagStore = tagStore;
         this.id = id;
     }
 
@@ -50,6 +54,6 @@ public class SedeResource {
 
     @Path("/corsi")
     public CorsiResource getCorsi() {
-        return new CorsiResource(corsoStore, store, id);
+        return new CorsiResource(corsoStore, store, tagStore, id);
     }
 }

@@ -6,6 +6,7 @@
 package it.ciacformazione.nostalciac.business;
 
 import it.ciacformazione.nostalciac.entity.Corso;
+import it.ciacformazione.nostalciac.entity.Tag;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,6 +42,14 @@ public class CorsoStore {
     
     public List<Corso> findAll(){
         return em.createQuery("select e from Corso e order by e.nome", Corso.class)
+                .getResultList();
+    }
+
+    
+    public List<Tag> findTags(Integer id) {
+        return em.createQuery(
+                "select e.tags from Corso e where e.id= :idCorso",Tag.class)
+                .setParameter("idCorso", id)
                 .getResultList();
     }
 }
