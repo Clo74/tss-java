@@ -56,7 +56,7 @@ public class SedeResource {
     @Path("/corsi")
     public CorsiResource getCorsi() {
         CorsiResource resource = rc.getResource(CorsiResource.class);
-        resource.setSedeId(id);
+        resource.setIdSede(id);
         return resource;
     }
     

@@ -5,10 +5,8 @@
  */
 package it.ciacformazione.nostalciac.services;
 
-import it.ciacformazione.nostalciac.business.CorsoStore;
-import it.ciacformazione.nostalciac.business.SedeStore;
-import it.ciacformazione.nostalciac.business.TagStore;
-import it.ciacformazione.nostalciac.entity.Sede;
+import it.ciacformazione.nostalciac.business.AnagraficaStore;
+import it.ciacformazione.nostalciac.entity.Anagrafica;
 import java.net.URI;
 import java.util.List;
 import javax.inject.Inject;
@@ -27,48 +25,34 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author tss
  */
-@Path("/sedi")
-public class SediResource {
+@Path("/anagrafiche")
+public class AnagraficheResource {
 
     @Inject
-    SedeStore store;
+    AnagraficaStore store;
 
     @Context
     ResourceContext rc;
     
     @GET
-    public List<Sede> findAll() {
-        return store.all();
-    }
-
-    @Path("{id}")
-    public SedeResource find(@PathParam("id") int id) {
-        SedeResource resource = rc.getResource(SedeResource.class);
-        resource.setId(id);
-        return resource;
+    public List<Anagrafica> findAll() {
+        return store.findAll();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Sede s, @Context UriInfo uriInfo) {
-        Sede saved = store.save(s);
+    public Response create(Anagrafica a, @Context UriInfo uriInfo) {
+        Anagrafica saved = store.save(a);
         URI uri = uriInfo.getAbsolutePathBuilder()
                 .path("/" + saved.getId())
                 .build();
         return Response.ok(uri).build();
     }
-
-    /*
-    get e set
-    */
-
-    public ResourceContext getRc() {
-        return rc;
-    }
-
-    public void setRc(ResourceContext rc) {
-        this.rc = rc;
-    }
     
-    
+    @Path("{id}")
+    public AnagraficaResource find(@PathParam("id") Integer id){
+        AnagraficaResource resource = rc.getResource(AnagraficaResource.class);
+        resource.setId(id);
+        return resource;
+    }
 }

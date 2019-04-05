@@ -9,9 +9,7 @@ import it.ciacformazione.nostalciac.business.CorsoStore;
 import it.ciacformazione.nostalciac.business.SedeStore;
 import it.ciacformazione.nostalciac.business.TagStore;
 import it.ciacformazione.nostalciac.entity.Corso;
-import it.ciacformazione.nostalciac.entity.Sede;
 import it.ciacformazione.nostalciac.entity.Tag;
-import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,65 +17,76 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.container.ResourceContext;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 /**
  *
  * @author tss
  */
-public class CorsiResource {
 
+public class CorsoResource {
+    
     @Inject
     private CorsoStore store;
 
     @Inject
     private SedeStore sedeStore;
 
-    @Context
-    ResourceContext rc;
+    @Inject
+    private TagStore tagStore;
     
+    private Integer id;
     private Integer idSede;
+    
+    @GET
+    public Corso find(){
+        return store.find(id);
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void update(Corso c) {
+        c.setId(id);
+        c.setSede(sedeStore.find(idSede));
+        store.save(c);
+    }
+
+    @DELETE
+    public void delete() {
+        store.remove(id);
+    }
 
     @GET
-    public List<Corso> findAll() {
-        return store.findBySede(idSede);
+    @Path("tags")
+    public List<Tag> findTags() {
+        return store.findTags(id);
     }
 
-    @Path("{id}")
-    public CorsoResource find(@PathParam("id") Integer id) {
-        CorsoResource resource = rc.getResource(CorsoResource.class);
-        resource.setId(id);
-        resource.setIdSede(idSede);
-        return resource;
-    }
-
-    @POST
+    @PUT
+    @Path("tags")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Corso c, @Context UriInfo uriInfo) {
-        Sede sede = sedeStore.find(idSede);
-        c.setSede(sede);
-        Corso saved = store.save(c);
-        URI uri = uriInfo.getAbsolutePathBuilder()
-                .path("/" + saved.getId())
-                .build();
-        return Response.ok(uri).build();
+    public void updateTags(List<Integer> idTags) {
+        Corso finded = store.find(id);
+        Set<Tag> tosave = idTags.stream()
+                .map(t -> tagStore.find(t))
+                .collect(Collectors.toSet());
+        finded.setTags(tosave);
+        store.save(finded);
     }
-
     
-
     /*
     get e set
-     */
+    */
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setIdSede(Integer idSede) {
         this.idSede = idSede;
     }
-
+    
+    
 }
