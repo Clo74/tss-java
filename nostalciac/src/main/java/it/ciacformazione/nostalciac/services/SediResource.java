@@ -42,10 +42,8 @@ public class SediResource {
     }
 
     @Path("{id}")
-    public SedeResource find(@PathParam("id") int id) {
-        SedeResource resource = rc.getResource(SedeResource.class);
-        resource.setId(id);
-        return resource;
+    public SedeResource find() {
+        return rc.getResource(SedeResource.class);
     }
 
     @POST

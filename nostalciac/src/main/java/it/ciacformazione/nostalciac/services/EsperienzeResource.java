@@ -59,7 +59,6 @@ public class EsperienzeResource {
     @Path("{id}")
     public EsperienzaResource find(@PathParam("id") Integer id) {
         EsperienzaResource resource = rc.getResource(EsperienzaResource.class);
-        resource.setId(id);
         resource.setIdAnagrafica(idAnagrafica);
         return resource;
     }

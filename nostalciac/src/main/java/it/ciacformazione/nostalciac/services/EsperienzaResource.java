@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author tss
  */
-@Path("esperienze")
+
 public class EsperienzaResource {
     
     @Inject
@@ -45,13 +45,15 @@ public class EsperienzaResource {
     @Context
     ResourceContext rc;
 
+    @PathParam("id")
+    private Integer id;
+    
     private Integer idAnagrafica;
     
-    private Integer id;
+    
     
     @GET
     public Esperienza find(){
-        System.out.println("EsperienzaResource.find()...");
         return store.find(id);
     }
     

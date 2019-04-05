@@ -50,9 +50,7 @@ public class AnagraficheResource {
     }
     
     @Path("{id}")
-    public AnagraficaResource find(@PathParam("id") Integer id){
-        AnagraficaResource resource = rc.getResource(AnagraficaResource.class);
-        resource.setId(id);
-        return resource;
+    public AnagraficaResource find(){
+        return  rc.getResource(AnagraficaResource.class);
     }
 }

@@ -33,6 +33,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author tss
  */
+@Path("corsi")
 public class CorsiResource {
 
     @Inject
@@ -52,9 +53,8 @@ public class CorsiResource {
     }
 
     @Path("{id}")
-    public CorsoResource find(@PathParam("id") Integer id) {
+    public CorsoResource find() {
         CorsoResource resource = rc.getResource(CorsoResource.class);
-        resource.setId(id);
         resource.setIdSede(idSede);
         return resource;
     }
