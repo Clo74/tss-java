@@ -23,7 +23,7 @@ public class SedeStore {
     
     
     public List<Sede> all(){
-        return em.createQuery("select e FROM Sede e ORDER BY e.nome",Sede.class)
+        return em.createQuery("selec e FROM Sede e ORDER BY e.nome",Sede.class)
                 .getResultList();
     }
     
