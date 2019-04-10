@@ -20,24 +20,23 @@
                     <c:import url="./includes/menu.jsp"/>
                 </nav>
             </header>
-            <div id="contenitore"></div>
-            <br><br>
             <article>
+                <div id="contenitore"></div>
+                
+                <br>
+
                 <form class="pure-form pure-form-stacked">
-                    <fieldset style="width: 80%;">
+                    <fieldset>
                         <legend>Inserisci/Modifica SEDE</legend>
-                        <select id="sel_sedi">
-                            <option value="-1">Scegli la Sede</option>
-                        </select>
 
                         <label for="nome">Nome sede: </label>
-                        <input type="text" id="nome" class="pure-input-1"><br/>
+                        <input type="text" id="nome"><br/>
 
                         <label for="indirizzo">Indirizzo: </label>
-                        <input type="text" id="indirizzo" class="pure-input-1"><br/>
+                        <input type="text" id="indirizzo" ><br/>
 
                         <label for="tel">Tel: </label>
-                        <input type="text" id="tel" class="pure-input-1" ><br/>
+                        <input type="text" id="tel" ><br/>
 
                         <label for="citta">Città: </label>
                         <input type="text" id="citta" size="100"><br/>
@@ -46,10 +45,11 @@
                         <input type="text" id="mail" size="100"><br/>
 
                         <label for="note">Note: </label>
-                        <input type="text" id="note" size="1000"><br/>
+                        <input type="text" id="note" size="100"><br/>
 
-                        <input type="button" id="b_modSede" value="Conferma modifica">
-
+                        <input type="button" class="pure-button pure-button-primary" id="b_insSede" value="Inserisci una nuova sede">
+                        <input type="button" class="pure-button pure-button-primary" id="b_modSede" value="Conferma modifica">
+                        
                         <br>
                     </fieldset>
                 </form>
@@ -58,6 +58,6 @@
                 <c:import url="./includes/footer.jsp"/>
             </footer>
         </main>
-        <script src="modificaSede.js" type="text/javascript"></script>
+        <script src="./indexSede.js" type="module"></script>
     </body>
 </html>

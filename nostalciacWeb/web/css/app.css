@@ -14,6 +14,10 @@ header{
 
 article{
     grid-area: "article";
+    margin: 0 auto;
+    padding: 0 2em;
+    margin-bottom: 50px;
+    line-height: 1.6em;
 }
 
 footer{
