@@ -5,9 +5,13 @@
  */
 
 
-function creaTabellaDaJson(oggJson, listaCampi, idTabella, classeTabella, contenitore = "body") {
+function creaTabellaDaJson(oggJson, listaCampi, idTabella, classeTabella, contenitore = "body", titolo) {
     let tabella = document.createElement("table")
+    let caption = document.createElement("caption")
+    caption.innerText = titolo
+    tabella.appendChild(caption);
     tabella.id = idTabella
+    
     tabella.className = classeTabella  //da verif
 
     let vCampi = listaCampi.split(",")

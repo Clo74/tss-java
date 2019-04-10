@@ -20,7 +20,7 @@ public class EJBExceptionMapping implements ExceptionMapper<EJBException> {
     @Override
     public Response toResponse(EJBException ex) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .header("caused-by", "error in EJB objects")
+                .header("caused-by", "errore nell'accesso ai dati")
                 .build();
     }
     

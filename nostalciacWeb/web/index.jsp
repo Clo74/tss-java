@@ -4,20 +4,29 @@
     Author     : tss
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Nostalciac</title>
+        <c:import url="./includes/imports.jsp"/>
     </head>
     <body>
-        <a href="./modificaTag.jsp">Modifica TAG</a>
-        <br/>
-        <a href="./modificaSede.jsp">Modifica Sedi</a>
-        <div></div>
-        <!--<script src="jsNostalciac.js" type="text/javascript"></script>-->
-        
+        <main>
+            <header>
+                <c:import url="./includes/menu.jsp"/>
+            </header>
+            <article>
+
+            </article>
+            <footer>
+                <c:import url="./includes/footer.jsp"/>
+            </footer>
+        </main>
+
     </body>
-    
+
 </html>

@@ -16,7 +16,7 @@ function caricaTag() {
             })
             .then(json => {
                 document.querySelector("#contenitore").innerHTML = "";
-                creaTabellaDaJson(json, "id,tag,tipo", "tab1", "tabella", "#contenitore");
+                creaTabellaDaJson(json, "id,tag,tipo", "tab1", "pure-table", "#contenitore", "Elenco TAGS");
                 jsonTags = json;
             })
             .then(e => caricaSelect())

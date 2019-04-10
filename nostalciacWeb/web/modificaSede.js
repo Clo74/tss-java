@@ -16,7 +16,7 @@ function caricaSedi() {
             })
             .then(json => {
                 document.querySelector("#contenitore").innerHTML = "";
-                creaTabellaDaJson(json, "id,nome,indirizzo,tel,citta,mail,note", "tab1", "pure-table", "#contenitore");
+                creaTabellaDaJson(json, "id,nome,indirizzo,tel,citta,mail,note", "tab1", "pure-table", "#contenitore", "Elenco SEDI");
                 jsonSedi = json;
             })
             .then(e => caricaSelect())
