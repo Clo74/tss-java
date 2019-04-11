@@ -4,10 +4,10 @@
             <a href="${pageContext.request.contextPath}/index.jsp" 
                class="pure-menu-link">Home</a></li>
         <li class="pure-menu-item">
-            <a href="${pageContext.request.contextPath}/modificaTag.jsp" 
+            <a href="${pageContext.request.contextPath}/indexTag.jsp" 
                class="pure-menu-link">Tags</a></li>
         <li class="pure-menu-item">
-            <a href="${pageContext.request.contextPath}/modificaSede.jsp" 
+            <a href="${pageContext.request.contextPath}/indexSede.jsp" 
                class="pure-menu-link">Sedi</a></li>
     </ul>
 </nav>

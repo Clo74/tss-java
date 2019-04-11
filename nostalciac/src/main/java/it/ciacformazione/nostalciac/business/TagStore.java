@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -26,14 +27,21 @@ public class TagStore {
     @PersistenceContext()
     EntityManager em;
 
+    public List<Tag> all() {
+        return all(0, 10);
+    }
+    
     /**
      * Restituisce tutti i Tag da DB
      *
      * @return tutti i Tag
      */
-    public List<Tag> all() {
+    public List<Tag> all(int start, int maxResult) {
         return em.createQuery("select e FROM Tag e ORDER BY e.tipo", Tag.class)
+                .setFirstResult(start)
+                .setMaxResults(maxResult)
                 .getResultList();
+
     }
 
     /**
@@ -66,7 +74,6 @@ public class TagStore {
         em.remove(toremove);
     }
 
-    
     /**
      * Restituisce i tag trovati in base alla ricerca
      *
@@ -83,12 +90,12 @@ public class TagStore {
 
         if (searchTag != null && !searchTag.isEmpty()) {
             condition = cb.and(condition,
-                cb.like(root.get("tag"), "%" + searchTag + "%"));
+                    cb.like(root.get("tag"), "%" + searchTag + "%"));
         }
 
         if (searchTipo != null && !searchTipo.isEmpty()) {
             condition = cb.and(condition,
-                cb.like(root.get("tipo"), "%" + searchTipo + "%"));
+                    cb.like(root.get("tipo"), "%" + searchTipo + "%"));
         }
 
         query.select(root)

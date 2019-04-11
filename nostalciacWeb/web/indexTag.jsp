@@ -43,6 +43,6 @@
             </footer>
         </main>
 
-        <script src="modificaTag.js" type="text/javascript"></script>
+        <script src="./indexTag.js" type="module"></script>
     </body>
 </html>
