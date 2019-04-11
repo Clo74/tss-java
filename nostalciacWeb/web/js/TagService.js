@@ -5,18 +5,19 @@ export default class TagService extends AbstractService {
         this.url = this.baseUrl + "/tags"
     }
 
-    async all() {
-        console.log(this.url);
-        const data = await fetch(this.url, {
+    async all(start,page) {
+        const data = await fetch(this.url + `?start=${start}&page=${page}`, {
             method: 'get',
             headers: {
                 'Accept': 'application/json'
             }
         })
-                .then(response => response.json())
-                .catch(res => console.error(res))
+        .then(response => response.json())
+        .catch(res => console.error(res))
         return data;
     }
+    
+    
 }
 
 

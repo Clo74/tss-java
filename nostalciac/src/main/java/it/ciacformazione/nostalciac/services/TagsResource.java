@@ -9,7 +9,9 @@ import it.ciacformazione.nostalciac.business.TagStore;
 import it.ciacformazione.nostalciac.entity.Tag;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,10 +36,12 @@ public class TagsResource {
     TagStore store;
 
     @GET
-    public List<Tag> search(
+    public Map<String,Object> search(
             @QueryParam("tag") String searchTag,
-            @QueryParam("tipo") String searchTipo) {
-        return store.search(searchTag, searchTipo);
+            @QueryParam("tipo") String searchTipo,
+            @QueryParam("start") Integer start,
+            @QueryParam("page") Integer page) {
+        return store.searchToJson(searchTag, searchTipo, start, page);
     }
 
     @GET

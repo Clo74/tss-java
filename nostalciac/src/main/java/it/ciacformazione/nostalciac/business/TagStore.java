@@ -6,9 +6,16 @@
 package it.ciacformazione.nostalciac.business;
 
 import it.ciacformazione.nostalciac.entity.Tag;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -34,6 +41,8 @@ public class TagStore {
     /**
      * Restituisce tutti i Tag da DB
      *
+     * @param start
+     * @param maxResult
      * @return tutti i Tag
      */
     public List<Tag> all(int start, int maxResult) {
@@ -79,9 +88,12 @@ public class TagStore {
      *
      * @param searchTag
      * @param searchTipo
+     * @param start
+     * @param page
      * @return
      */
-    public List<Tag> search(String searchTag, String searchTipo) {
+    public List<Tag> search(String searchTag, String searchTipo,
+            Integer start, Integer page) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tag> query = cb.createQuery(Tag.class);
         Root<Tag> root = query.from(Tag.class);
@@ -103,7 +115,49 @@ public class TagStore {
                 .orderBy(cb.asc(root.get("tipo")));
 
         return em.createQuery(query)
+                .setFirstResult(start)
+                .setMaxResults(page)
                 .getResultList();
 
     }
+    
+    public Integer searchCount(String searchTag, String searchTipo) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Tag> root = query.from(Tag.class);
+
+        Predicate condition = cb.conjunction();
+
+        if (searchTag != null && !searchTag.isEmpty()) {
+            condition = cb.and(condition,
+                    cb.like(root.get("tag"), "%" + searchTag + "%"));
+        }
+
+        if (searchTipo != null && !searchTipo.isEmpty()) {
+            condition = cb.and(condition,
+                    cb.like(root.get("tipo"), "%" + searchTipo + "%"));
+        }
+
+        query.select(cb.count(root))
+                .where(condition);
+
+        return em.createQuery(query)
+                .getSingleResult().intValue();
+
+    }
+    
+    public Map<String,Object> searchToJson(String searchTag, String searchTipo,
+            Integer start, Integer page) {
+        
+        int count = searchCount(searchTag, searchTipo);
+        
+        List<Tag> search = search(searchTag, searchTipo, start, page);
+        
+        Map<String,Object> result = new HashMap<>();
+        result.put("count", count);
+        result.put("data", search);
+        
+        return result;
+    }
+    
 }

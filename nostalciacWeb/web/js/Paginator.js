@@ -3,61 +3,70 @@
  * count
  * callback
  */
+
 export default class Paginator {
     constructor(properties) {
         this.prop = properties;
         this.current = 1;
         this.page = this.prop.page;
         this.count = this.prop.count;
-        this.onFirst = this.onFirst.bind(this);
-        this.onPrev = this.onPrev.bind(this);
-        this.onNext = this.onNext.bind(this);
-        this.onLast = this.onLast.bind(this);
-        this.create();
-        this.checkButtons();
+        this.lastPage = this._lastPage();
+        
+        this._onFirst = this._onFirst.bind(this);
+        this._onPrev = this._onPrev.bind(this);
+        this._onNext = this._onNext.bind(this);
+        this._onLast = this._onLast.bind(this);
+        this._checkButtons = this._checkButtons.bind(this);
+        
+        this._create();
+        this._checkButtons();
     }
 
-    create() {
-        this.first = this.createButton("btnFirst", "First", this.onFirst);
-        this.prev = this.createButton("btnFirst", "Prev", this.onPrev);
-        this.next = this.createButton("btnFirst", "Next", this.onNext);
-        this.last = this.createButton("btnFirst", "Last", this.onLast);
+    _lastPage(){
+        let p = Math.floor(this.count / this.page);
+        return this.count % this.page !== 0 ? p + 1 : p;
+    }
+    _create() {
+        this.first = this._createButton("btnFirst", "First", this._onFirst);
+        this.prev = this._createButton("btnFirst", "Prev", this._onPrev);
+        this.next = this._createButton("btnFirst", "Next", this._onNext);
+        this.last = this._createButton("btnFirst", "Last", this._onLast);
     }
 
-    createButton(id, label, clickHandler) {
+    _createButton(id, label, clickHandler) {
         const b = document.createElement("button");
-        console.dir(b);
         b.id = id;
         b.innerText = label;
+        b.classList.add("pure-button")
         b.addEventListener("click", clickHandler);
+        b.addEventListener("click", this._checkButtons);
         if (this.prop.callback) {
             b.addEventListener("click", this.prop.callback);
         }
         return b;
     }
 
-    checkButtons() {
-        //this.first.classList.add("pure-button-disabled");
-        //this.prev.classList.add("pure-button-disabled");
+    _checkButtons() {
+        this.first.classList.toggle("pure-button-disabled",this.current == 1);
+        this.prev.classList.toggle("pure-button-disabled",this.current == 1);
+        this.next.classList.toggle("pure-button-disabled",this.current == this.lastPage);
+        this.last.classList.toggle("pure-button-disabled",this.current == this.lastPage);
     }
 
-    onFirst() {
-        console.log("first -> " + this.current)
+    _onFirst() {
         this.current = 1;
     }
 
-    onPrev(e) {
+    _onPrev(e) {
         this.current--;
     }
 
-    onNext(e) {
+    _onNext(e) {
         this.current++;
     }
 
-    onLast(e) {
-        this.current = Math.floor(this.count / this.page);
-        this.current = this.count % this.page !== 0 ? this.current + 1 : this.current;
-        console.log("last -> " + this.current)
+    _onLast(e) {
+        this.current = this.lastPage;
     }
 }
 

@@ -1,13 +1,15 @@
 import Paginator from "./Paginator.js"
+
         /**
          titolo;
          service;
          idTabella;
          classeTabella;
          contenitore;
+         page
          */
 
-export default class Tabella {
+        export default class Tabella {
 
     constructor(properties) {
         this.prop = properties;
@@ -17,77 +19,85 @@ export default class Tabella {
         this.tbody = document.createElement("tbody");
         this.tfoot = document.createElement("tfoot");
 
-        this.loadData();
+        this.rowSelected = null;
+        this.onPaginatorClick = this.onPaginatorClick.bind(this);
+        this._loadData();
     }
 
-    loadData() {
-        this.prop.service.all()
-                .then(data => this.render(data));
+    _loadData() {
+        this.prop.service.all(0, this.prop.page)
+                .then(data => this._render(data));
     }
 
-    render(data) {
-        this.data = data;
-        this.readFields();
+    _reloadData() {
+        this.prop.service.all((this.paginator.current - 1) * this.paginator.page, this.paginator.page)
+                .then(json => {
+                    this.data = json.data;
+                    this.tbody.innerHTML = "";
+                    this._createBody();
+                });
+    }
+    _render(json) {
+        this.data = json.data;
+        this.count = json.count;
+        this._readFields();
         this.table.id = this.prop.idTabella;
         this.table.className = this.prop.classeTabella;
-        this.addCaption(this.prop.titolo);
-        this.addHeaders();
-        this.createBody();
-        this.createFooter();
+        this._addCaption(this.prop.titolo);
+        this._addHeaders();
+        this._createBody();
+        this._createFooter();
         this.el.appendChild(this.table);
+
     }
 
-    readFields() {
+    _readFields() {
         const [first] = this.data;
         this.fields = Reflect.ownKeys(first);
     }
 
-    addCaption(titolo) {
+    _addCaption(titolo) {
         let caption = document.createElement("caption")
         caption.innerText = titolo
         this.table.appendChild(caption);
     }
 
-    addHeaders() {
-        this.fields.forEach(key => this.addHeader(key));
+    _addHeaders() {
+        this.fields.map(name => this._createHeaderColumn(name))
+                .forEach(cell => this.thead.appendChild(cell));
         this.table.appendChild(this.thead);
     }
 
-    addHeader(...names) {
-        names.map(name => this.createHeaderColumn(name))
-                .forEach(cell => this.thead.appendChild(cell));
-    }
-
-    createHeaderColumn(value) {
+    _createHeaderColumn(value) {
         const hcell = document.createElement("th");
         hcell.innerText = value;
         return hcell;
     }
 
-    createBody() {
+    _createBody() {
         this.data
-                .map(v => this.createRow(v))
+                .map(v => this._createRow(v))
                 .forEach(v => this.tbody.appendChild(v));
         this.table.appendChild(this.tbody);
     }
 
-    createRow(rowData) {
+    _createRow(rowData) {
         const row = document.createElement("tr");
         row.onclick = this.onRowClick;
         this.fields
                 .map(v => Reflect.get(rowData, v))
-                .map(v => this.createCol(v))
+                .map(v => this._createCol(v))
                 .forEach(v => row.appendChild(v))
         return row;
     }
 
-    createCol(value) {
+    _createCol(value) {
         const col = document.createElement("td");
         col.innerText = value;
         return col;
     }
 
-    createFooter() {
+    _createFooter() {
         const row = document.createElement("tr");
         const col = document.createElement("td");
         console.dir(col);
@@ -100,8 +110,8 @@ export default class Tabella {
 
     createPaginator(col) {
         this.paginator = new Paginator({
-            page: 5,
-            count: this.data.length,
+            page: this.prop.page,
+            count: this.count,
             callback: this.onPaginatorClick
         });
         col.appendChild(this.paginator.first);
@@ -111,11 +121,16 @@ export default class Tabella {
     }
 
     onRowClick(e) {
-        console.log("row click");
+        
+        if (this.rowSelected) {
+            this.rowSelected.classList.toggle('row-select');
+        }
+        this.rowSelected = e.target.parentElement;
+        this.rowSelected.classList.toggle('row-select');
     }
 
     onPaginatorClick() {
-        console.log("paginator click");
+        this._reloadData();
     }
 }
 

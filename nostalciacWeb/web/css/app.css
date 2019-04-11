@@ -28,3 +28,13 @@ footer{
     justify-content: center;
 }
 
+.table-select{
+    cursor: pointer;
+}
+
+.table-select .row-select{
+    background: red;
+}
+table.table-select tbody tr:hover{
+    background: yellowgreen;
+}
