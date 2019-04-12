@@ -26,9 +26,6 @@
                 <form class="pure-form">
                     <fieldset>
                         <legend>Inserisci/Modifica TAGS</legend>
-                        <select id="sel_tags">
-                            <option value="-1">Scegli il Tag</option>
-                        </select>
                         <label for="tipo">Tipo: </label>
                         <input type="text" id="tipo">
                         <label for="tag">Tag: </label>

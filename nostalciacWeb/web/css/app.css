@@ -31,10 +31,9 @@ footer{
 .table-select{
     cursor: pointer;
 }
-
 .table-select .row-select{
-    background: red;
+    background: lightgray;
 }
 table.table-select tbody tr:hover{
-    background: yellowgreen;
+    background: lightyellow;
 }

@@ -1,4 +1,5 @@
 import Paginator from "./Paginator.js"
+        import {createButton} from "./HtmlUtils.js"
 
         /**
          titolo;
@@ -7,6 +8,9 @@ import Paginator from "./Paginator.js"
          classeTabella;
          contenitore;
          page
+         callbackCreate
+         callbackUpdate
+         callbackDelete
          */
 
         export default class Tabella {
@@ -18,9 +22,9 @@ import Paginator from "./Paginator.js"
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
         this.tfoot = document.createElement("tfoot");
-
         this.rowSelected = null;
         this.onPaginatorClick = this.onPaginatorClick.bind(this);
+        this.onRowClick = this.onRowClick.bind(this);
         this._loadData();
     }
 
@@ -29,7 +33,7 @@ import Paginator from "./Paginator.js"
                 .then(data => this._render(data));
     }
 
-    _reloadData() {
+    reloadData() {
         this.prop.service.all((this.paginator.current - 1) * this.paginator.page, this.paginator.page)
                 .then(json => {
                     this.data = json.data;
@@ -53,7 +57,7 @@ import Paginator from "./Paginator.js"
 
     _readFields() {
         const [first] = this.data;
-        this.fields = Reflect.ownKeys(first);
+        this.fields = Reflect.ownKeys(first).filter(v => v !== 'url');
     }
 
     _addCaption(titolo) {
@@ -88,6 +92,7 @@ import Paginator from "./Paginator.js"
                 .map(v => Reflect.get(rowData, v))
                 .map(v => this._createCol(v))
                 .forEach(v => row.appendChild(v))
+        row.setAttribute('data',rowData.url);
         return row;
     }
 
@@ -105,7 +110,35 @@ import Paginator from "./Paginator.js"
         this.createPaginator(col)
         row.appendChild(col);
         this.tfoot.appendChild(row);
+        this._createButtons();
         this.table.appendChild(this.tfoot);
+    }
+
+    _createButtons() {
+        const row = document.createElement("tr");
+        const col = document.createElement("td");
+        col.colSpan = this.fields.length;
+
+        this.btnCreate = createButton("btnCreate", "Nuovo");
+        this.btnCreate.onclick = _ => {
+            this.prop.callbackCreate();
+        };
+        col.appendChild(this.btnCreate);
+
+        this.btnUpdate = createButton("btnUpdate", "Modifica");
+        this.btnUpdate.onclick = _ => {
+            this.prop.callbackUpdate(this.rowSelected.getAttribute('data'));
+        };
+        col.appendChild(this.btnUpdate);
+        
+        this.btnDelete = createButton("btnDelete", "Elimina");
+        this.btnDelete.onclick = _ => {
+            this.prop.callbackDelete(this.rowSelected.getAttribute('data'));
+        };
+        col.appendChild(this.btnDelete);
+        
+        row.appendChild(col);
+        this.tfoot.appendChild(row);
     }
 
     createPaginator(col) {
@@ -121,8 +154,7 @@ import Paginator from "./Paginator.js"
     }
 
     onRowClick(e) {
-        
-        if (this.rowSelected) {
+        if (this.rowSelected !== null) {
             this.rowSelected.classList.toggle('row-select');
         }
         this.rowSelected = e.target.parentElement;
@@ -130,7 +162,7 @@ import Paginator from "./Paginator.js"
     }
 
     onPaginatorClick() {
-        this._reloadData();
+        this.reloadData();
     }
 }
 

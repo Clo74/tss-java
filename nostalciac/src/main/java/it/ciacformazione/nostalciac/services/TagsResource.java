@@ -40,8 +40,15 @@ public class TagsResource {
             @QueryParam("tag") String searchTag,
             @QueryParam("tipo") String searchTipo,
             @QueryParam("start") Integer start,
-            @QueryParam("page") Integer page) {
-        return store.searchToJson(searchTag, searchTipo, start, page);
+            @QueryParam("page") Integer page,
+            @Context UriInfo uriInfo) {
+        Map<String, Object> result = store.
+                searchToJson(searchTag, searchTipo, start, page);
+        result.put("url", uriInfo.getAbsolutePath().toString());
+        List<Tag> tags = (List)result.get("data");
+        tags.forEach(v -> v.setUrl(uriInfo.getAbsolutePathBuilder()
+                .path("/" + v.getId()).build().toString()));
+        return result;
     }
 
     @GET
